@@ -3,7 +3,7 @@ plugins {
     id 'application'
 }
 
-mainClassName = 'io.github.viska97.mpilabs.lab1.Main'
+mainClassName = 'io.github.viska97.mpilabs.lab1.MatrixPipeline'
 
 def mpjHome = System.getenv('MPJ_HOME')
 def mpjStarterJar = files("$mpjHome/lib/starter.jar")
