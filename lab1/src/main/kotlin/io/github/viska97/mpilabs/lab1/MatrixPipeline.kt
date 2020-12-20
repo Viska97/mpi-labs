@@ -34,13 +34,13 @@ class MatrixPipeline {
 
             printMatrix("segment $INPUT_SEGMENT send matrix to segments $MINORS_SEGMENT and $INVERSE_SEGMENT:", matrix)
 
-            MPI.COMM_WORLD.Send(matrix, 0, MATRIX_SIZE, MPI.OBJECT, 1, 0)
-            MPI.COMM_WORLD.Send(matrix, 0, MATRIX_SIZE, MPI.OBJECT, 2, 0)
+            MPI.COMM_WORLD.Send(matrix, 0, MATRIX_SIZE, MPI.OBJECT, MINORS_SEGMENT, TAG)
+            MPI.COMM_WORLD.Send(matrix, 0, MATRIX_SIZE, MPI.OBJECT, INVERSE_SEGMENT, TAG)
         }
 
         private fun calculateMinors() {
             val matrix = Array(MATRIX_SIZE) { DoubleArray(MATRIX_SIZE) }
-            MPI.COMM_WORLD.Recv(matrix, 0, MATRIX_SIZE, MPI.OBJECT, 0, 0)
+            MPI.COMM_WORLD.Recv(matrix, 0, MATRIX_SIZE, MPI.OBJECT, 0, TAG)
 
             printMatrix("segment $MINORS_SEGMENT recv matrix from segment $INPUT_SEGMENT:", matrix)
 
@@ -63,7 +63,7 @@ class MatrixPipeline {
 
             printMatrix("segment $MINORS_SEGMENT send minors matrix to segment $INVERSE_SEGMENT", minorsMatrix)
 
-            MPI.COMM_WORLD.Send(minorsMatrix, 0, MATRIX_SIZE, MPI.OBJECT, 2, 0)
+            MPI.COMM_WORLD.Send(minorsMatrix, 0, MATRIX_SIZE, MPI.OBJECT, INVERSE_SEGMENT, TAG)
         }
 
         fun inverseMatrix() {
