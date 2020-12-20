@@ -1,0 +1,29 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.4.20'
+    id 'application'
+}
+
+mainClassName = 'io.github.viska97.mpilabs.lab2.IntegralDefinition'
+
+def mpjHome = System.getenv('MPJ_HOME')
+def mpjStarterJar = files("$mpjHome/lib/starter.jar")
+def mpjJar = files("$mpjHome/lib/mpj.jar")
+def mpjClassPath = sourceSets.main.runtimeClasspath - mpjJar
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    implementation mpjJar
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+
+run {
+    main = 'runtime.starter.MPJRun'
+    classpath = mpjStarterJar
+    args mainClassName, '-cp', mpjClassPath.asPath, '-np', '6'
+    dependsOn classes
+}
